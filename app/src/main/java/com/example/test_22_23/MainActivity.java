@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,16 +32,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Cursor cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-                String msg = "";
-                if (cursor == null) return;
                 while (cursor.moveToNext()) {
                     String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                     String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                    String number=cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-                    msg += "id:" + id + " name:" + name + "\n\n";
+                    //   String number=cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                    message+= "id:" + id + " name:" + name + "\n\n";
                 }
                 cursor.close();
-                textViewContacts.setText(msg);
+                textViewContacts.setText(message);
             }
         });
 
@@ -52,11 +49,9 @@ public class MainActivity extends AppCompatActivity {
         public Content(Handler handler) {
             super(handler);
         }
-        private final static String TAG="Contact:";
         @Override
         public void onChange(boolean change) {
-            Log.v(TAG, "联系人变化");
-            Log.v(TAG,  "联系人未变");
+           Toast.makeText(MainActivity.this,"联系人变化",Toast.LENGTH_LONG).show();
         }
     }
 
